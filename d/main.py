@@ -2,7 +2,9 @@
 # dependencies = [
 #   "django",
 #   "sentry-sdk",
-#   "uvicorn[standard]",
+#   "uvicorn",
+#   "uvloop",
+#   "httptools",
 # ]
 # ///
 
@@ -10,11 +12,9 @@ import os
 
 import uvicorn
 
-config = uvicorn.Config(
-    app="sentry_perf_check.asgi:application",
-    port=int(os.getenv("PORT")),
-    workers=1,
-    access_log=False,
-)
-server = uvicorn.Server(config)
-server.run()
+if __name__ == "__main__":
+    uvicorn.run(
+        "sentry_perf_check.asgi:application",
+        port=int(os.getenv("PORT")),
+        access_log=False,
+    )
