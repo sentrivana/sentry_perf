@@ -1,7 +1,7 @@
 # /// script
 # dependencies = [
 #   "django",
-#   "sentry-sdk",
+#   "sentry-sdk==2.34.1",
 #   "uvicorn",
 #   "uvloop",
 #   "httptools",
