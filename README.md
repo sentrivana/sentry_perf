@@ -72,6 +72,21 @@ This command is run against:
         - with initializing Sentry in the lifespan function.
 
 
+## NOTE on the lifespan case
+
+After reading the docs at https://docs.sentry.io/platforms/python/
+
+> However, in async applications, you need to call sentry_sdk.init() inside an async function
+> to ensure async code is instrumented properly.
+> We recommend calling sentry_sdk.init() at the beginning of the first async function you call,
+> as demonstrated in the example below.
+
+I've tried to move the `sentry_sdk.init()` call inside the lifespan function.
+Indeed, it seems to mitigate the performance hit of the FastAPI app (the improvement depends on the environment).
+
+I couldn't figure out an equivalent place for Django, though.
+
+
 ## Customization
 
 You can play around with different setups by taking advantage of the tooling that the `run.sh` script is using.
@@ -83,7 +98,9 @@ E.g. you might try and play around with the following env vars.
 
 ## Results
 
-With Python `3.12.11` and 1 worker, on my machine I'm getting:
+I've run the benchamark on my MacBook M3 Pro.
+
+With Python `3.12.11` and **1** worker, I'm getting:
 ```sh
 $ grep -R "Requests per" ./bench_results/workers_1/ | sort | column -t -s ":"
 ./bench_results/workers_1/django_async_no_sentry.txt              Requests per second      4153.79 [#/sec] (mean)
@@ -98,7 +115,7 @@ $ grep -R "Requests per" ./bench_results/workers_1/ | sort | column -t -s ":"
 ./bench_results/workers_1/fastapi_sync_with_sentry.txt            Requests per second      3411.95 [#/sec] (mean)
 ```
 
-for 9 workers, I'm getting:
+for **9** workers, I'm getting:
 ```sh
 $ grep -R "Requests per" ./bench_results/workers_9 | sort | column -t -s ":"
 ./bench_results/workers_9/django_async_no_sentry.txt              Requests per second      10786.02 [#/sec] (mean)
