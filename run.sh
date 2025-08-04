@@ -18,7 +18,7 @@ function run_bench() {
 
 function killservers() {
     echo "Killing all background processes..."
-    kill -INT 0
+    kill -INT $(jobs -p)
 }
 
 trap 'killservers' EXIT
