@@ -40,15 +40,12 @@ python3 -m venv f.env
 pip install -e ../sentry-python
 pip install fastapi uvicorn uvloop httptools pyinstrument py-spy
 
-#PORT=9000 d.env/bin/python ./d/main.py &
-#PORT=9001 f.env/bin/python ./f/main.py &
-#INIT_SENTRY=1 PORT=9002 d.env/bin/python ./d/main.py &
-#PORT=9003 f.env/bin/python ./f/main.py &
-#PORT=9004 f.env/bin/python ./f/main.py &
 
 INIT_SENTRY=1 PORT=9000 f.env/bin/python ./f/main.py &
 PORT=9001 f.env/bin/python ./f/main.py &
 INIT_SENTRY_LIFESPAN=1 PORT=9002 f.env/bin/python ./f/main.py &
+#PORT=9003 d.env/bin/python ./d/main.py &
+#INIT_SENTRY=1 PORT=9004 d.env/bin/python ./d/main.py &
 
 echo "Waiting for servers to start..."
 sleep 5
@@ -64,7 +61,7 @@ run_bench "fastapi_sync_with_sentry_lifespan" "http://127.0.0.1:9002/hello"
 run_bench "fastapi_async_with_sentry_lifespan" "http://127.0.0.1:9002/hello-async"
 
 #run_bench "django_sync_no_sentry" "http://127.0.0.1:9003/hello"
-#run_bench "django_async_no_sentry" "http://127.0.0.1:9003/hello-async?profile=1"
+#run_bench "django_async_no_sentry" "http://127.0.0.1:9003/hello-async"
 
 #run_bench "django_sync_with_sentry" "http://127.0.0.1:9004/hello"
 #run_bench "django_async_with_sentry" "http://127.0.0.1:9004/hello-async"
