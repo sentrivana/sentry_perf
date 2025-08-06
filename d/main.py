@@ -1,13 +1,3 @@
-# /// script
-# dependencies = [
-#   "django",
-#   "sentry-sdk==2.34.1",
-#   "uvicorn",
-#   "uvloop",
-#   "httptools",
-# ]
-# ///
-
 import os
 
 import uvicorn
