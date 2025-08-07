@@ -13,6 +13,12 @@ if os.environ.get("NO_TRACES_SAMPLE_RATE") == "1":
     print("Setting traces_sample_rate=None")
     opts["traces_sample_rate"] = None
 
+if os.environ.get("NO_MIDDLEWARE_SPANS") == "1":
+    print("Disabling middleware spans")
+    opts["integrations"] = [
+        DjangoIntegration(middleware_spans=False),
+    ]
+
 if os.environ.get("NO_SESSIONS") == "1":
     print("Disabling session tracking")
     opts["auto_session_tracking"] = False
